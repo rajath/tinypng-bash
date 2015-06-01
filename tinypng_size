@@ -7,31 +7,39 @@ if [ -z "$2" ]; then
   echo "size threshold not present"
   exit 1
 fi
-echo "Converting PNG files using TinyPNG.org (by Voormedia http://voormedia.com)";
 api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
 for param in  png jpg
 do
    #find all jpg and png files for this parameter
-        find "$1" -name "*.${param}" -type f -size $2 | sort > "temp${param}.txt"
-  varL=1
-  #loop through all files 
-  while read p; do
+   find "$1" -name "*.${param}" -type f -size "+${2}" | sort > "temp${param}.txt"
+   if [ ! -s temp${param}.txt ]; then
+      echo "No $param files found to process"
+      exit 1  
+   else 
+      echo "$param files found. Processing..."
+   fi	
+		
+   varL=1
+   #loop through all files 
+   while read p; do
 	  #upload file to  	
 	  JSON=`curl -i --user api:$api --data-binary @$p https://api.tinypng.com/shrink 2>/dev/null  `; 
 #	  echo "JSON is ${JSON}";
+          #find the location of the converted file
 	  URL=${JSON/*url\":\"/};
 	  URL=${URL/\"*/};
 
     	  echo "URL is $URL";
 
 	  curl $URL> ${varL}_tmp 2>/dev/null
+          #check if file is converted and has a valid size 
 	  if [[ $(find ${varL}_tmp -type f -size +1k 2>/dev/null) ]]; then
            cat ${varL}_tmp > $p		
 	   echo "${p} updated."
 	  else
 	   echo "${p} NOT updated."
           fi 
-	  #rm ${varL}_tmp
+	  rm -f ${varL}_tmp
           ((varL++))
   done < temp${param}.txt
 
