@@ -14,14 +14,12 @@ do
    find "$1" -name "*.${param}" -type f -mmin "-${2}" | sort > "temp${param}.txt"
    if [ ! -s temp${param}.txt ]; then
       echo "No $param files found to process"
-      exit 1  
    else 
       echo "$param files found. Processing..."
-   fi	
 		
-   varL=1
-   #loop through all files 
-   while read p; do
+   	varL=1
+   	#loop through all files 
+   	while read p; do
 	  #upload file to  	
 	  JSON=`curl -i --user api:$api --data-binary @$p https://api.tinypng.com/shrink 2>/dev/null  `; 
 #	  echo "JSON is ${JSON}";
@@ -41,7 +39,8 @@ do
           fi 
 	  rm -f ${varL}_tmp
           ((varL++))
-  done < temp${param}.txt
+  	done < temp${param}.txt
 
+  fi
 done  
 

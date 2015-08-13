@@ -7,24 +7,29 @@ if [ -z "$2" ]; then
   echo "size threshold not present"
   exit 1
 fi
+if [ -z "$3" ]; then
+  echo "time threshold not present, defaulting to one year"
+  time=525600
+else
+  time=$3  
+fi
 api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
+#set time for one year by default
 for param in  png jpg
 do
    #find all jpg and png files for this parameter
-   find "$1" -name "*.${param}" -type f -size "+${2}" | sort > "temp${param}.txt"
+   find "$1" -name "*.${param}" -type f -size "+${2}" -mmin "-${time}" | sort > "temp${param}.txt"
    if [ ! -s temp${param}.txt ]; then
       echo "No $param files found to process"
-      exit 1  
    else 
       echo "$param files found. Processing..."
-   fi	
 		
-   varL=1
-   #loop through all files 
-   while read p; do
+   	varL=1
+   	#loop through all files 
+   	while read p; do
 	  #upload file to  	
 	  JSON=`curl -i --user api:$api --data-binary @$p https://api.tinypng.com/shrink 2>/dev/null  `; 
-#	  echo "JSON is ${JSON}";
+	  echo "JSON is ${JSON}";
           #find the location of the converted file
 	  URL=${JSON/*url\":\"/};
 	  URL=${URL/\"*/};
@@ -41,7 +46,9 @@ do
           fi 
 	  rm -f ${varL}_tmp
           ((varL++))
-  done < temp${param}.txt
+  	done < temp${param}.txt
 
+  fi
+  rm -rf temp${param}.txt
 done  
 
