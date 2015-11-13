@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Converting PNG files using TinyPNG.org (by Voormedia http://voormedia.com)";
-api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
+api=##;
 for param in  png jpg
 do
    #find all jpg and png files for this parameter
