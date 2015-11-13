@@ -7,7 +7,7 @@ if [ -z "$2" ]; then
   echo "time threshold not present"
   exit 1
 fi
-api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
+api=##;
 for param in  png jpg
 do
    #find all jpg and png files for this parameter
