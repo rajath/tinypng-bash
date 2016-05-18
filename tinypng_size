@@ -13,7 +13,7 @@ if [ -z "$3" ]; then
 else
   time=$3  
 fi
-api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
+api=xx;
 #set time for one year by default
 for param in  png jpg jpeg
 do
