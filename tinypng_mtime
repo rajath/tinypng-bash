@@ -8,7 +8,7 @@ if [ -z "$2" ]; then
   exit 1
 fi
 api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
-for param in  png jpg
+for param in  png jpg jpeg
 do
    #find all jpg and png files for this parameter
    find "$1" -name "*.${param}" -type f -mmin "-${2}" | sort > "temp${param}.txt"

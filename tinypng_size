@@ -15,7 +15,7 @@ else
 fi
 api=haoly8_yRPVQIm58PU3LpoBXyOCDIy7f;
 #set time for one year by default
-for param in  png jpg
+for param in  png jpg jpeg
 do
    #find all jpg and png files for this parameter
    find "$1" -name "*.${param}" -type f -size "+${2}" -mmin "-${time}" | sort > "temp${param}.txt"
